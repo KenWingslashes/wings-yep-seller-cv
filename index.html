@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chốt Dưỡng Có Thưởng - Wings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        luxury: {
+                            gold: '#D4AF37',
+                            lightgold: '#F3E5AB',
+                            darkgold: '#AA8822',
+                            black: '#050505',
+                            charcoal: '#111111',
+                            green: '#0F2618',
+                        }
+                    },
+                    backgroundImage: {
+                        'diagonal-lines': 'repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.05) 0px, rgba(212, 175, 55, 0.05) 1px, transparent 1px, transparent 20px)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #f3f4f6;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(to right, #D4AF37 0%, #F3E5AB 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0px 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .gold-glow {
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 0 40px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(17, 17, 17, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card:hover {
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* Leaf blur effect */
+        .leaf-blur-top-left {
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(15, 38, 24, 0.7) 0%, rgba(5, 5, 5, 0) 70%);
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .leaf-blur-bottom-right {
+            position: absolute;
+            bottom: -150px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(15, 38, 24, 0.6) 0%, rgba(5, 5, 5, 0) 70%);
+            filter: blur(50px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Ticket Border */
+        .ticket-border {
+            background-image:
+                repeating-linear-gradient(0deg, #D4AF37, #D4AF37 8px, transparent 8px, transparent 16px),
+                repeating-linear-gradient(90deg, #D4AF37, #D4AF37 8px, transparent 8px, transparent 16px),
+                repeating-linear-gradient(180deg, #D4AF37, #D4AF37 8px, transparent 8px, transparent 16px),
+                repeating-linear-gradient(270deg, #D4AF37, #D4AF37 8px, transparent 8px, transparent 16px);
+            background-size: 2px 100%, 100% 2px, 2px 100%, 100% 2px;
+            background-position: 0 0, 0 0, 100% 0, 0 100%;
+            background-repeat: no-repeat;
+        }
+
+        /* Shine effect */
+        .shine-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shine-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-20deg);
+            animation: shine 3s infinite 2s;
+        }
+
+        @keyframes shine {
+            100% {
+                left: 200%;
+            }
+        }
+
+        /* Leaf SVG Pattern background */
+        .pattern-leaves {
+            background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M54.627 0l.83.83-53.797 53.797-.83-.83L54.627 0zM27.5 30c0-1.38-1.12-2.5-2.5-2.5s-2.5 1.12-2.5 2.5 1.12 2.5 2.5 2.5 2.5-1.12 2.5-2.5z" fill="%23ffffff" fill-opacity="0.02" fill-rule="evenodd"/></svg>');
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen pattern-leaves relative font-sans">
+
+    <!-- ITEM 1: HERO / BANNER SECTION -->
+    <header
+        class="relative w-full min-h-[85vh] flex items-center justify-center pt-24 pb-16 px-4 overflow-hidden bg-gradient-to-t from-luxury-gold/5 via-black to-black">
+        <!-- Abstract Botanical Overlay -->
+        <div class="leaf-blur-top-left"></div>
+        <div class="leaf-blur-bottom-right"></div>
+        <div class="absolute inset-0 bg-diagonal-lines z-0"></div>
+
+        <!-- Bottom Light Hắt Sáng -->
+        <div
+            class="absolute bottom-[-10%] left-1/2 transform -translate-x-1/2 w-3/4 h-[400px] bg-luxury-gold/20 blur-[150px] z-0 rounded-full">
+        </div>
+
+        <div
+            class="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+
+            <!-- Left: Text Info -->
+            <div
+                class="text-center lg:text-left flex flex-col items-center lg:items-start order-2 lg:order-1 relative z-20">
+                <!-- LOGO -->
+                <img src="wings-logo.png" alt="Wings"
+                    class="h-16 md:h-20 mb-6 object-contain filter drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]"
+                    onerror="this.src='https://via.placeholder.com/150x60/000/d4af37?text=WINGS'">
+
+                <div
+                    class="inline-flex items-center space-x-2 mb-4 bg-black/50 px-4 py-1.5 rounded-full border border-luxury-gold/30 backdrop-blur-md">
+                    <i data-lucide="zap" class="text-luxury-gold w-4 h-4"></i>
+                    <span class="text-luxury-lightgold uppercase tracking-[0.25em] text-xs font-bold">Tháng 4 Bứt Phá -
+                        Bùng Nổ Doanh Số</span>
+                </div>
+
+                <h1 class="font-serif text-5xl md:text-[5.5rem] font-extrabold mb-6 leading-[1.1] uppercase">
+                    <span class="block text-white">Chiến Dịch</span>
+                    <span class="block gold-gradient-text mt-2 font-black py-2">Chốt Dưỡng<br>Có Thưởng</span>
+                </h1>
+
+                <p
+                    class="text-gray-300 text-lg md:text-xl max-w-lg leading-relaxed mb-10 font-light border-l-2 border-luxury-gold pl-4">
+                    Sản phẩm Yeppeum - Đánh thức vẻ đẹp tự nhiên. Mở ra cơ hội bứt phá thu nhập không giới hạn với chính
+                    sách thưởng đặc biệt.
+                </p>
+
+                <button onclick="document.getElementById('details').scrollIntoView()"
+                    class="group relative inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-luxury-gold via-luxury-lightgold to-luxury-gold text-black font-extrabold py-4 px-10 rounded-full transition-all duration-500 transform hover:scale-105 shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(212,175,55,0.6)] overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-white/40 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out z-0">
+                    </div>
+                    <span class="relative z-10 text-lg tracking-wide">XEM THỂ LỆ GAME</span>
+                    <i data-lucide="arrow-down-circle" class="w-6 h-6 relative z-10"></i>
+                </button>
+            </div>
+
+            <!-- Right: Product Display -->
+            <div class="relative flex justify-center items-center order-1 lg:order-2 min-h-[400px]">
+                <!-- Glow behind product -->
+                <div
+                    class="absolute inset-0 bg-luxury-gold/30 blur-[100px] rounded-full w-2/3 h-2/3 m-auto z-0 animate-pulse">
+                </div>
+
+                <!-- Main Product -->
+                <img src="DƯỠNG MI YEPPEUM.png" alt="Dưỡng Mi Yeppeum"
+                    class="relative z-10 w-full max-w-[250px] md:max-w-md object-contain animate-float drop-shadow-[0_40px_50px_rgba(0,0,0,0.8)]"
+                    onerror="this.src='https://via.placeholder.com/300x500/111/d4af37?text=YEPPEUM'">
+
+                <!-- Polaroid Before/After (Floating side element) -->
+                <div
+                    class="absolute bottom-10 -left-4 md:-left-12 z-20 transform -rotate-12 hover:rotate-0 transition-transform duration-500 shadow-2xl glass-card p-2 rounded-xl border-white/20">
+                    <img src="DƯỠNG MI YEPPEUM (2).png" alt="Hiệu quả"
+                        class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-lg border border-black"
+                        onerror="this.src='https://via.placeholder.com/150/222/d4af37?text=Before/After'">
+                    <div class="text-center pt-2 pb-1">
+                        <span class="text-white text-xs font-serif font-bold tracking-wider">Hiệu Quả Thực Tế</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ITEM 2: REWARDS + BET -->
+    <main id="details" class="relative z-10 max-w-3xl mx-auto px-4 py-12">
+
+        <!-- Title -->
+        <div class="text-center mb-6">
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mb-2 uppercase tracking-wider">Mốc <span class="text-luxury-gold">Thưởng</span></h2>
+            <p class="text-gray-500 text-sm">Mỗi cây bán được = 1 cây thưởng + tiền mặt cộng dồn</p>
+        </div>
+
+        <!-- Reward Tiers (2-col grid, mobile friendly) -->
+        <div class="grid grid-cols-2 gap-3 mb-10">
+            <div class="glass-card rounded-2xl p-4 text-center">
+                <p class="text-luxury-gold font-serif text-lg font-bold mb-1">#1</p>
+                <p class="text-white text-sm font-medium">1 Cây</p>
+                <p class="text-gray-500 text-xs">Khởi động</p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 text-center">
+                <p class="text-luxury-gold font-serif text-lg font-bold mb-1">#2</p>
+                <p class="text-white text-sm font-medium">1 Cây</p>
+                <p class="text-luxury-lightgold text-sm font-bold">+10K</p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 text-center">
+                <p class="text-luxury-gold font-serif text-lg font-bold mb-1">#3</p>
+                <p class="text-white text-sm font-medium">1 Cây</p>
+                <p class="text-luxury-lightgold text-sm font-bold">+20K</p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 text-center">
+                <p class="text-luxury-gold font-serif text-lg font-bold mb-1">#4</p>
+                <p class="text-white text-sm font-medium">1 Cây</p>
+                <p class="text-luxury-lightgold text-sm font-bold">+30K</p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 text-center">
+                <p class="text-luxury-gold font-serif text-lg font-bold mb-1">#5 - 9</p>
+                <p class="text-white text-sm font-medium">1 Cây</p>
+                <p class="text-luxury-lightgold text-sm font-bold">+40K ~ 90K</p>
+            </div>
+            <!-- 10+ featured -->
+            <div class="rounded-2xl p-4 text-center bg-gradient-to-b from-luxury-gold/15 to-black border border-luxury-gold relative overflow-hidden shine-effect">
+                <div class="absolute top-1 -right-6 bg-red-600 text-white text-[7px] font-black px-7 py-0.5 transform rotate-45">VÔ HẠN</div>
+                <p class="text-luxury-gold font-serif text-lg font-bold mb-1">🏆 10+</p>
+                <p class="text-white text-sm font-bold">1 Cây</p>
+                <p class="text-luxury-gold text-sm font-black">+100K / cây</p>
+            </div>
+        </div>
+
+        <!-- CHỌN MỤC TIÊU → MỞ MODAL -->
+        <div class="text-center mb-5">
+            <h3 class="font-serif text-xl text-white mb-1">Chọn Mục Tiêu & Đặt Cược</h3>
+            <p class="text-gray-500 text-xs">Bấm chọn → Điền tên → Nhận vé khoe ngay</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3">
+            <!-- 15 cây -->
+            <div onclick="openBetModal(0)" class="glass-card rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-luxury-gold/60 active:scale-[0.98] transition-all">
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 rounded-full bg-black border border-luxury-gold/50 flex items-center justify-center flex-shrink-0">
+                        <span class="font-serif text-luxury-gold font-bold">15</span>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold text-sm">Mục tiêu 15 Cây</p>
+                        <p class="text-luxury-gold text-xs">Thưởng: <span class="font-bold">+960K</span></p>
+                    </div>
+                </div>
+                <div class="text-right flex-shrink-0">
+                    <p class="text-luxury-lightgold font-bold">50 🍌</p>
+                    <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
+                </div>
+            </div>
+
+            <!-- 30 cây -->
+            <div onclick="openBetModal(1)" class="glass-card rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-luxury-gold/60 active:scale-[0.98] transition-all">
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 rounded-full bg-black border border-luxury-gold/70 flex items-center justify-center flex-shrink-0 shadow-[0_0_8px_rgba(212,175,55,0.3)]">
+                        <span class="font-serif text-luxury-gold font-bold">30</span>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold text-sm">Mục tiêu 30 Cây</p>
+                        <p class="text-luxury-gold text-xs">Thưởng: <span class="font-bold">+2.460K</span></p>
+                    </div>
+                </div>
+                <div class="text-right flex-shrink-0">
+                    <p class="text-luxury-lightgold font-bold">100 🍌</p>
+                    <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
+                </div>
+            </div>
+
+            <!-- 50 cây (highlight) -->
+            <div onclick="openBetModal(2)" class="rounded-2xl p-4 flex items-center justify-between cursor-pointer border border-luxury-gold bg-gradient-to-r from-luxury-gold/10 to-transparent hover:from-luxury-gold/20 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(212,175,55,0.1)]">
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 rounded-full bg-gradient-to-br from-luxury-lightgold to-luxury-darkgold flex items-center justify-center flex-shrink-0 shadow-[0_0_12px_rgba(212,175,55,0.5)]">
+                        <span class="font-serif text-black font-black">50</span>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold text-sm">Mục tiêu 50 Cây 🔥</p>
+                        <p class="text-luxury-gold text-xs">Thưởng: <span class="font-bold">+4.460K</span></p>
+                    </div>
+                </div>
+                <div class="text-right flex-shrink-0">
+                    <p class="text-luxury-lightgold font-bold">200 🍌</p>
+                    <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ITEM 3 & 4: E-TICKET MODAL & GENERATOR -->
+    <div id="betModal"
+        class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl hidden flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-300 overflow-y-auto">
+        <button onclick="closeBetModal()"
+            class="absolute top-6 right-6 text-gray-500 hover:text-white bg-black/50 p-2 rounded-full border border-gray-800 transition-colors z-50">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Form Setup View -->
+        <div id="betSetupView"
+            class="w-full max-w-md glass-card rounded-3xl p-8 transform scale-95 transition-transform duration-300">
+            <div class="text-center mb-8">
+                <i data-lucide="ticket" class="w-10 h-10 text-luxury-gold mx-auto mb-3"></i>
+                <h3 class="font-serif text-2xl font-bold text-white">Xác Nhận Tham Gia</h3>
+                <p class="text-gray-400 text-sm mt-1">Tạo vé E-Ticket siêu xịn để khoe đội nhóm</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Avatar Upload -->
+                <div>
+                    <label class="block text-sm text-luxury-gold font-medium mb-2">Ảnh Chân Dung (Frame Tròn)</label>
+                    <label for="imageFile"
+                        class="flex flex-col items-center justify-center w-32 h-32 mx-auto border-2 border-dashed border-gray-600 rounded-full cursor-pointer bg-black/50 hover:border-luxury-gold transition-colors relative overflow-hidden group">
+                        <div id="uploadPlaceholder" class="flex flex-col items-center justify-center text-center p-2">
+                            <i data-lucide="image-plus" class="w-6 h-6 text-gray-400 group-hover:text-luxury-gold"></i>
+                            <span class="text-[10px] text-gray-500 mt-2 uppercase">Trực diện</span>
+                        </div>
+                        <img id="previewImage" src="" class="hidden absolute inset-0 w-full h-full object-cover z-10">
+                        <div id="changeOverlay"
+                            class="hidden absolute inset-0 bg-black/60 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i data-lucide="refresh-cw" class="w-5 h-5 text-white"></i>
+                        </div>
+                    </label>
+                    <input id="imageFile" type="file" class="hidden" accept="image/*" onchange="previewUpload(event)" />
+                </div>
+
+                <!-- Input Name -->
+                <div>
+                    <label class="block text-sm text-luxury-gold font-medium mb-2">Họ & Tên / Chức Vụ</label>
+                    <input type="text" id="nameInput" placeholder="VD: Nguyễn Văn A"
+                        class="w-full bg-black/80 border border-gray-700 rounded-xl p-3 text-white focus:outline-none focus:border-luxury-gold transition-colors">
+                </div>
+
+                <!-- Select Level -->
+                <div>
+                    <label class="block text-sm text-luxury-gold font-medium mb-2">Hạn Mức Mục Tiêu</label>
+                    <div class="grid grid-cols-1 gap-3">
+                        <label
+                            class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
+                            <div class="flex items-center">
+                                <input type="radio" name="level" value="MỨC TỰ TIN" data-bet="50" onchange="document.getElementById('expectedTreesInput').value=15; calculateExpectedReward()"
+                                    class="text-luxury-gold focus:ring-luxury-gold bg-black" checked>
+                                <span class="ml-3 text-white text-sm">Mục tiêu 15 Cây <span class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận +960K)</span></span>
+                            </div>
+                            <span class="text-luxury-gold font-bold text-sm">50 🍌</span>
+                        </label>
+                        <label
+                            class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
+                            <div class="flex items-center">
+                                <input type="radio" name="level" value="MỨC BỨT PHÁ" data-bet="100" onchange="document.getElementById('expectedTreesInput').value=30; calculateExpectedReward()"
+                                    class="text-luxury-gold focus:ring-luxury-gold bg-black">
+                                <span class="ml-3 text-white text-sm">Mục tiêu 30 Cây <span class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận +2.460K)</span></span>
+                            </div>
+                            <span class="text-luxury-gold font-bold text-sm">100 🍌</span>
+                        </label>
+                        <label
+                            class="flex items-center justify-between p-3 border border-luxury-gold/40 rounded-xl cursor-pointer hover:border-luxury-gold bg-luxury-gold/10">
+                            <div class="flex items-center">
+                                <input type="radio" name="level" value="MỨC CHIẾN THẦN" data-bet="200" onchange="document.getElementById('expectedTreesInput').value=50; calculateExpectedReward()"
+                                    class="text-luxury-gold focus:ring-luxury-gold bg-black">
+                                <span class="ml-3 text-white font-bold text-sm">Mục tiêu 50 Cây <span class="text-luxury-gold/90 text-xs ml-1 font-medium">(Nhận +4.460K)</span></span>
+                            </div>
+                            <span class="text-luxury-gold font-bold text-sm">200 🍌</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Số cây dự kiến bán -->
+                <div>
+                    <label class="block text-sm text-luxury-gold font-medium mb-2">Số cây dự kiến bán (Tháng 4)</label>
+                    <input type="number" id="expectedTreesInput" placeholder="Nhập số lượng..." min="1" oninput="calculateExpectedReward()"
+                        class="w-full bg-black/80 border border-gray-700 rounded-xl p-3 text-white focus:outline-none focus:border-luxury-gold transition-colors appearance-none">
+                    
+                    <!-- Reward Display -->
+                    <div id="rewardDisplay" class="mt-4 hidden border border-luxury-gold/50 bg-gradient-to-r from-luxury-gold/10 to-transparent rounded-xl p-4 shadow-[inset_0_0_15px_rgba(212,175,55,0.1)]">
+                        <p class="text-xs text-gray-400 mb-1 uppercase tracking-widest"><i data-lucide="gift" class="inline w-3 h-3 mr-1 text-luxury-gold"></i>Thưởng dự kiến nhận được</p>
+                        <p class="font-serif text-[1.4rem] text-white font-bold tracking-wide"><span id="totalBộ" class="text-luxury-gold">0</span> Cây <span class="text-gray-500 font-sans mx-1">+</span><span id="totalTiền" class="gold-gradient-text text-[1.6rem]">0</span><span class="text-sm font-sans text-gray-400 ml-1">VNĐ</span></p>
+                    </div>
+                </div>
+
+                <!-- Câu thần chú -->
+                <div>
+                    <label class="block text-sm text-luxury-gold font-medium mb-2">💬 Câu Thần Chú Của Bạn</label>
+                    <textarea id="mantraInput" placeholder="VD: Tháng này chốt đơn mỏi tay!" rows="2" maxlength="60"
+                        class="w-full bg-black/80 border border-gray-700 rounded-xl p-3 text-white focus:outline-none focus:border-luxury-gold transition-colors resize-none text-sm"></textarea>
+                    <p class="text-gray-600 text-[10px] mt-1 text-right"><span id="mantraCount">0</span>/60</p>
+                </div>
+
+                <button onclick="generateTicket()"
+                    class="w-full bg-gradient-to-r from-luxury-gold to-luxury-darkgold text-black font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] transition-all">
+                    TẠO VÉ KHOE NGAY
+                </button>
+            </div>
+        </div>
+
+        <!-- Result E-Ticket View -->
+        <div id="betResultView" class="hidden flex-col items-center w-full max-w-md pb-10">
+            <!-- PORTRAIT E-TICKET -->
+            <div id="eTicketCard" style="width: 360px; background: #0a0a0a; border: 2px solid #D4AF37; border-radius: 24px; overflow: hidden;">
+                <div style="padding: 28px 22px 22px; display: flex; flex-direction: column; align-items: center;">
+
+                    <!-- Wings Logo -->
+                    <img src="wings-logo.png" alt="Wings" style="height: 44px; margin-bottom: 6px;"
+                        onerror="this.src='https://via.placeholder.com/120x44/0a0a0a/d4af37?text=Wings'">
+                    <p style="font-size: 8px; color: #555; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px;">CHIẾN DỊCH THÁNG 4</p>
+
+                    <!-- Campaign Title -->
+                    <p style="font-family: 'Playfair Display', serif; font-size: 22px; color: #D4AF37; text-align: center; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; margin-bottom: 18px; line-height: 1.3;">CHỐT DƯỠNG<br>CÓ THƯỞNG</p>
+
+                    <!-- Circle Avatar -->
+                    <div style="position: relative; margin-bottom: 10px;">
+                        <div style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid #D4AF37; padding: 2px; background: #000; box-sizing: border-box;">
+                            <div id="ticketAvatarBg" style="width: 100%; height: 100%; border-radius: 50%; background: #222 center/cover no-repeat;"></div>
+                        </div>
+                        <div style="position: absolute; bottom: 2px; right: 2px; background: #3b82f6; border-radius: 50%; width: 24px; height: 24px; border: 3px solid #000; display: flex; align-items: center; justify-content: center;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <!-- STORYTELLING CONTENT -->
+                    <div style="width: 100%; text-align: center; margin-bottom: 14px;">
+                        <!-- Name -->
+                        <p id="ticketName" style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">HÂN</p>
+                        
+                        <!-- Story line 1 -->
+                        <p style="font-size: 15px; color: #ccc; line-height: 1.6; margin-bottom: 4px;">Đã đặt mục tiêu</p>
+                        <p style="font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: #D4AF37; margin-bottom: 4px;">"<span id="ticketTarget">50</span> cây"</p>
+                        <p style="font-size: 15px; color: #ccc; margin-bottom: 2px;">để lấy thưởng <span id="ticketReward" style="font-weight: 900; color: #D4AF37; font-size: 17px;">4.5TR</span></p>
+                        
+                        <!-- Divider -->
+                        <div style="width: 40px; height: 1px; background: rgba(212,175,55,0.4); margin: 14px auto;"></div>
+
+                        <!-- Story line 2 -->
+                        <p style="font-size: 16px; color: white; font-weight: 700; margin-bottom: 14px;">Cược <span id="ticketBet" style="color: #F3E5AB; font-size: 18px;">200</span> 🍌 → Vô kèo tháng 4</p>
+                    </div>
+
+                    <!-- Mantra Quote -->
+                    <div style="width: 100%; background: rgba(212,175,55,0.06); border-left: 3px solid #D4AF37; padding: 12px 14px; border-radius: 0 12px 12px 0; margin-bottom: 14px;">
+                        <p style="font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px;">💬 Thần chú</p>
+                        <p id="ticketMantra" style="font-size: 14px; color: #D4AF37; font-style: italic; line-height: 1.5;">"Tháng này chốt đơn mỏi tay!"</p>
+                    </div>
+
+                    <!-- Status + Serial -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                        <div style="display: inline-flex; align-items: center; gap: 5px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); padding: 5px 12px; border-radius: 20px;">
+                            <div style="width: 6px; height: 6px; border-radius: 50%; background: #22c55e;"></div>
+                            <span style="font-size: 9px; color: #22c55e; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">VÔ KÈO</span>
+                        </div>
+                        <p style="font-size: 8px; color: #444; font-family: monospace; letter-spacing: 2px;">YP-<span id="ticketSerial"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Share Action -->
+            <div class="mt-8 flex flex-col space-y-3 w-[360px]">
+                <button onclick="shareTicket()" id="shareBtn"
+                    class="w-full bg-luxury-gold text-black font-bold py-3.5 rounded-xl hover:bg-luxury-lightgold transition-colors flex items-center justify-center space-x-2">
+                    <i data-lucide="share-2" class="w-5 h-5"></i>
+                    <span>CHIA SẺ NGAY</span>
+                </button>
+                <button onclick="resetTicket()"
+                    class="w-full text-gray-400 hover:text-white py-2 text-sm transition-colors">
+                    Làm lại thẻ khác
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+        let userImage = null;
+
+        function openBetModal(levelIndex) {
+            document.getElementById('betModal').classList.remove('hidden');
+            document.getElementById('betModal').classList.add('flex');
+            setTimeout(() => {
+                document.getElementById('betModal').classList.remove('opacity-0');
+                document.getElementById('betSetupView').classList.remove('scale-95');
+                document.getElementById('betSetupView').classList.add('scale-100');
+            }, 10);
+            resetTicket();
+
+            // Pre-select level if provided
+            if (typeof levelIndex === 'number') {
+                const radios = document.getElementsByName('level');
+                const treeMap = [15, 30, 50];
+                if (radios[levelIndex]) {
+                    radios[levelIndex].checked = true;
+                    document.getElementById('expectedTreesInput').value = treeMap[levelIndex];
+                    calculateExpectedReward();
+                }
+            }
+        }
+
+        function closeBetModal() {
+            document.getElementById('betModal').classList.add('opacity-0');
+            document.getElementById('betSetupView').classList.add('scale-95');
+            document.getElementById('betSetupView').classList.remove('scale-100');
+            setTimeout(() => {
+                document.getElementById('betModal').classList.add('hidden');
+                document.getElementById('betModal').classList.remove('flex');
+            }, 300);
+        }
+
+        function previewUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    userImage = e.target.result;
+                    document.getElementById('previewImage').src = userImage;
+                    document.getElementById('previewImage').classList.remove('hidden');
+                    document.getElementById('uploadPlaceholder').classList.add('hidden');
+                    document.getElementById('changeOverlay').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function generateTicket() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!name) {
+                alert("Vui lòng nhập Tên của bạn!");
+                return;
+            }
+
+            const selectedOption = document.querySelector('input[name="level"]:checked');
+            const levelText = selectedOption.value;
+            const betValue = selectedOption.getAttribute('data-bet');
+            const trees = document.getElementById('expectedTreesInput').value || '15';
+
+            // Calculate reward for the ticket
+            const treeCount = parseInt(trees);
+            let money = 0;
+            for (let i = 1; i <= treeCount; i++) {
+                if (i === 2) money += 10000;
+                else if (i === 3) money += 20000;
+                else if (i === 4) money += 30000;
+                else if (i >= 5 && i <= 9) money += (i - 1) * 10000;
+                else if (i >= 10) money += 100000;
+            }
+            const rewardText = money >= 1000000 ? (money / 1000000).toFixed(1) + 'TR' : (money / 1000) + 'K';
+
+            // Set avatar via background-image (html2canvas safe, no distortion)
+            const avatarSrc = userImage || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect fill="%23222" width="200" height="200"/><circle cx="100" cy="75" r="40" fill="%23555"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="%23555"/></svg>';
+            document.getElementById('ticketAvatarBg').style.backgroundImage = `url(${avatarSrc})`;
+            document.getElementById('ticketName').innerText = name;
+            document.getElementById('ticketTarget').innerText = treeCount;
+            document.getElementById('ticketReward').innerText = rewardText;
+            document.getElementById('ticketBet').innerText = betValue;
+            document.getElementById('ticketSerial').innerText = Math.floor(1000 + Math.random() * 9000);
+
+            // Set mantra
+            const mantra = document.getElementById('mantraInput').value.trim();
+            document.getElementById('ticketMantra').innerText = mantra ? '"' + mantra + '"' : '"Toà không chơi toà không hiểu đâu!"';
+
+            // Switch view
+            document.getElementById('betSetupView').classList.add('hidden');
+            document.getElementById('betResultView').classList.remove('hidden');
+            document.getElementById('betResultView').classList.add('flex');
+        }
+
+        function calculateExpectedReward() {
+            const trees = parseInt(document.getElementById('expectedTreesInput').value);
+            const rewardDisplay = document.getElementById('rewardDisplay');
+            
+            if (isNaN(trees) || trees < 1) {
+                rewardDisplay.classList.add('hidden');
+                return;
+            }
+            
+            rewardDisplay.classList.remove('hidden');
+            
+            let money = 0;
+            // Thưởng cộng dồn
+            for (let i = 1; i <= trees; i++) {
+                if (i === 2) money += 10000;
+                else if (i === 3) money += 20000;
+                else if (i === 4) money += 30000;
+                else if (i >= 5 && i <= 9) money += (i - 1) * 10000; // Ngoại suy: cây thứ 5 +40k, 6 +50k...
+                else if (i >= 10) money += 100000;
+            }
+            
+            document.getElementById('totalBộ').innerText = trees;
+            document.getElementById('totalTiền').innerText = money.toLocaleString('vi-VN');
+            
+            // Auto select level
+            const radios = document.getElementsByName('level');
+            if (trees >= 50) radios[2].checked = true;
+            else if (trees >= 30) radios[1].checked = true;
+            else radios[0].checked = true;
+        }
+
+        function resetTicket() {
+            document.getElementById('betSetupView').classList.remove('hidden');
+            document.getElementById('betResultView').classList.add('hidden');
+            document.getElementById('betResultView').classList.remove('flex');
+            document.getElementById('nameInput').value = '';
+            document.getElementById('previewImage').src = '';
+            document.getElementById('previewImage').classList.add('hidden');
+            document.getElementById('uploadPlaceholder').classList.remove('hidden');
+            document.getElementById('expectedTreesInput').value = '15';
+            document.getElementById('mantraInput').value = '';
+            document.getElementById('mantraCount').innerText = '0';
+            calculateExpectedReward();
+            userImage = null;
+        }
+
+        // Mantra character counter
+        document.getElementById('mantraInput').addEventListener('input', function() {
+            document.getElementById('mantraCount').innerText = this.value.length;
+        });
+
+        function shareTicket() {
+            const ticket = document.getElementById('eTicketCard');
+            const btn = document.getElementById('shareBtn');
+            const origHTML = btn.innerHTML;
+
+            btn.innerHTML = 'Đang tạo ảnh...';
+            btn.disabled = true;
+
+            html2canvas(ticket, {
+                scale: 3,
+                backgroundColor: '#050505',
+                useCORS: true,
+                allowTaint: true
+            }).then(canvas => {
+                canvas.toBlob(async (blob) => {
+                    const fileName = `Wings-Yeppeum-${document.getElementById('ticketName').innerText.replace(/\s+/g, '-')}.jpg`;
+                    const file = new File([blob], fileName, { type: 'image/jpeg' });
+
+                    // Try Web Share API (mobile native share sheet)
+                    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                title: 'Wings - Chốt Dưỡng Có Thưởng',
+                                text: '🔥 Tớ vừa đặt cược chiến dịch Chốt Dưỡng Có Thưởng! Bạn dám không?',
+                                files: [file]
+                            });
+                            btn.innerHTML = 'ĐÃ CHIA SẺ! ✅';
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                // User cancelled, fallback to download
+                                fallbackDownload(canvas, fileName);
+                            }
+                            btn.innerHTML = origHTML;
+                        }
+                    } else {
+                        // Fallback: download file on desktop
+                        fallbackDownload(canvas, fileName);
+                        btn.innerHTML = 'ĐÃ LƯU! ✅';
+                    }
+
+                    btn.disabled = false;
+                    setTimeout(() => { btn.innerHTML = origHTML; }, 2500);
+                }, 'image/jpeg', 0.95);
+            }).catch(err => {
+                console.error(err);
+                alert('Lỗi tạo ảnh. Vui lòng thử lại!');
+                btn.innerHTML = origHTML;
+                btn.disabled = false;
+            });
+        }
+
+        function fallbackDownload(canvas, fileName) {
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = canvas.toDataURL('image/jpeg', 0.95);
+            link.click();
+        }
+    </script>
+</body>
+
+</html>
