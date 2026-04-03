@@ -307,7 +307,7 @@
                     </div>
                 </div>
                 <div class="text-right flex-shrink-0">
-                    <p class="text-luxury-lightgold font-bold">50 🍌</p>
+                    <p class="text-luxury-lightgold font-bold">750 🍌</p>
                     <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
                 </div>
             </div>
@@ -326,7 +326,7 @@
                     </div>
                 </div>
                 <div class="text-right flex-shrink-0">
-                    <p class="text-luxury-lightgold font-bold">100 🍌</p>
+                    <p class="text-luxury-lightgold font-bold">1.500 🍌</p>
                     <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
                 </div>
             </div>
@@ -345,7 +345,7 @@
                     </div>
                 </div>
                 <div class="text-right flex-shrink-0">
-                    <p class="text-luxury-lightgold font-bold">200 🍌</p>
+                    <p class="text-luxury-lightgold font-bold">2.500 🍌</p>
                     <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
                 </div>
             </div>
@@ -403,37 +403,37 @@
                         <label
                             class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
                             <div class="flex items-center">
-                                <input type="radio" name="level" value="MỨC TỰ TIN" data-bet="50"
+                                <input type="radio" name="level" value="MỨC TỰ TIN" data-trees="15"
                                     onchange="document.getElementById('expectedTreesInput').value=15; calculateExpectedReward()"
                                     class="text-luxury-gold focus:ring-luxury-gold bg-black" checked>
                                 <span class="ml-3 text-white text-sm">Mục tiêu 15 Cây <span
                                         class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận +960K)</span></span>
                             </div>
-                            <span class="text-luxury-gold font-bold text-sm">50 🍌</span>
+                            <span class="text-luxury-gold font-bold text-sm">750 🍌</span>
                         </label>
                         <label
                             class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
                             <div class="flex items-center">
-                                <input type="radio" name="level" value="MỨC BỨT PHÁ" data-bet="100"
+                                <input type="radio" name="level" value="MỨC BỨT PHÁ" data-trees="30"
                                     onchange="document.getElementById('expectedTreesInput').value=30; calculateExpectedReward()"
                                     class="text-luxury-gold focus:ring-luxury-gold bg-black">
                                 <span class="ml-3 text-white text-sm">Mục tiêu 30 Cây <span
                                         class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận
                                         +2.460K)</span></span>
                             </div>
-                            <span class="text-luxury-gold font-bold text-sm">100 🍌</span>
+                            <span class="text-luxury-gold font-bold text-sm">1.500 🍌</span>
                         </label>
                         <label
                             class="flex items-center justify-between p-3 border border-luxury-gold/40 rounded-xl cursor-pointer hover:border-luxury-gold bg-luxury-gold/10">
                             <div class="flex items-center">
-                                <input type="radio" name="level" value="MỨC CHIẾN THẦN" data-bet="200"
+                                <input type="radio" name="level" value="MỨC CHIẾN THẦN" data-trees="50"
                                     onchange="document.getElementById('expectedTreesInput').value=50; calculateExpectedReward()"
                                     class="text-luxury-gold focus:ring-luxury-gold bg-black">
                                 <span class="ml-3 text-white font-bold text-sm">Mục tiêu 50 Cây <span
                                         class="text-luxury-gold/90 text-xs ml-1 font-medium">(Nhận
                                         +4.460K)</span></span>
                             </div>
-                            <span class="text-luxury-gold font-bold text-sm">200 🍌</span>
+                            <span class="text-luxury-gold font-bold text-sm">2.500 🍌</span>
                         </label>
                     </div>
                 </div>
@@ -629,6 +629,14 @@
             }
         }
 
+        // Calculate bet based on tree count: 1 cây=10🍌, 2 cây=20🍌, 3+ cây=50🍌/cây
+        function calculateBet(treeCount) {
+            if (treeCount <= 0) return 0;
+            if (treeCount === 1) return 10;
+            if (treeCount === 2) return 20;
+            return treeCount * 50;
+        }
+
         function generateTicket() {
             const name = document.getElementById('nameInput').value.trim();
             if (!name) {
@@ -638,7 +646,6 @@
 
             const selectedOption = document.querySelector('input[name="level"]:checked');
             const levelText = selectedOption.value;
-            const betValue = selectedOption.getAttribute('data-bet');
             const trees = document.getElementById('expectedTreesInput').value || '15';
 
             // Calculate reward for the ticket
@@ -653,13 +660,16 @@
             }
             const rewardText = money >= 1000000 ? (money / 1000000).toFixed(1) + 'TR' : (money / 1000) + 'K';
 
+            // Calculate bet dynamically
+            const betValue = calculateBet(treeCount);
+
             // Set avatar via background-image (html2canvas safe, no distortion)
             const avatarSrc = userImage || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect fill="%23222" width="200" height="200"/><circle cx="100" cy="75" r="40" fill="%23555"/><ellipse cx="100" cy="170" rx="60" ry="45" fill="%23555"/></svg>';
             document.getElementById('ticketAvatarBg').style.backgroundImage = `url(${avatarSrc})`;
             document.getElementById('ticketName').innerText = name;
             document.getElementById('ticketTarget').innerText = treeCount;
             document.getElementById('ticketReward').innerText = rewardText;
-            document.getElementById('ticketBet').innerText = betValue;
+            document.getElementById('ticketBet').innerText = betValue.toLocaleString('vi-VN');
             document.getElementById('ticketSerial').innerText = Math.floor(1000 + Math.random() * 9000);
 
             // Set mantra
