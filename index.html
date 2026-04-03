@@ -307,7 +307,7 @@
                     </div>
                 </div>
                 <div class="text-right flex-shrink-0">
-                    <p class="text-luxury-lightgold font-bold">750 🍌</p>
+                    <p class="text-luxury-lightgold font-bold">50 🍌</p>
                     <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
                 </div>
             </div>
@@ -326,7 +326,7 @@
                     </div>
                 </div>
                 <div class="text-right flex-shrink-0">
-                    <p class="text-luxury-lightgold font-bold">1.500 🍌</p>
+                    <p class="text-luxury-lightgold font-bold">50 🍌</p>
                     <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
                 </div>
             </div>
@@ -345,7 +345,7 @@
                     </div>
                 </div>
                 <div class="text-right flex-shrink-0">
-                    <p class="text-luxury-lightgold font-bold">2.500 🍌</p>
+                    <p class="text-luxury-lightgold font-bold">50 🍌</p>
                     <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
                 </div>
             </div>
@@ -409,7 +409,7 @@
                                 <span class="ml-3 text-white text-sm">Mục tiêu 15 Cây <span
                                         class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận +960K)</span></span>
                             </div>
-                            <span class="text-luxury-gold font-bold text-sm">750 🍌</span>
+                            <span class="text-luxury-gold font-bold text-sm">50 🍌</span>
                         </label>
                         <label
                             class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
@@ -421,7 +421,7 @@
                                         class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận
                                         +2.460K)</span></span>
                             </div>
-                            <span class="text-luxury-gold font-bold text-sm">1.500 🍌</span>
+                            <span class="text-luxury-gold font-bold text-sm">50 🍌</span>
                         </label>
                         <label
                             class="flex items-center justify-between p-3 border border-luxury-gold/40 rounded-xl cursor-pointer hover:border-luxury-gold bg-luxury-gold/10">
@@ -433,7 +433,7 @@
                                         class="text-luxury-gold/90 text-xs ml-1 font-medium">(Nhận
                                         +4.460K)</span></span>
                             </div>
-                            <span class="text-luxury-gold font-bold text-sm">2.500 🍌</span>
+                            <span class="text-luxury-gold font-bold text-sm">50 🍌</span>
                         </label>
                     </div>
                 </div>
@@ -629,12 +629,12 @@
             }
         }
 
-        // Calculate bet based on tree count: 1 cây=10🍌, 2 cây=20🍌, 3+ cây=50🍌/cây
+        // Calculate bet (flat): 1 cây=10🍌, 2 cây=20🍌, 3+ cây=50🍌
         function calculateBet(treeCount) {
             if (treeCount <= 0) return 0;
             if (treeCount === 1) return 10;
             if (treeCount === 2) return 20;
-            return treeCount * 50;
+            return 50;
         }
 
         function generateTicket() {
