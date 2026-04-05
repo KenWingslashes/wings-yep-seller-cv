@@ -293,7 +293,7 @@
         </div>
 
         <div class="grid grid-cols-1 gap-3">
-            <!-- 15 cây -->
+            <!-- 1 cây -->
             <div onclick="openBetModal(0)"
                 class="glass-card rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-luxury-gold/60 active:scale-[0.98] transition-all">
                 <div class="flex items-center space-x-3">
@@ -312,7 +312,7 @@
                 </div>
             </div>
 
-            <!-- 30 cây -->
+            <!-- 2 cây -->
             <div onclick="openBetModal(1)"
                 class="glass-card rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-luxury-gold/60 active:scale-[0.98] transition-all">
                 <div class="flex items-center space-x-3">
@@ -330,8 +330,28 @@
                     <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
                 </div>
             </div>
+
+            <!-- 3 cây -->
+            <div onclick="openBetModal(2)"
+                class="glass-card rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-luxury-gold/60 active:scale-[0.98] transition-all">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-11 h-11 rounded-full bg-black border border-luxury-gold/70 flex items-center justify-center flex-shrink-0 shadow-[0_0_8px_rgba(212,175,55,0.3)]">
+                        <span class="font-serif text-luxury-gold font-bold">3</span>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold text-sm">Mục tiêu 3 Cây</p>
+                        <p class="text-luxury-gold text-xs">Thưởng: <span class="font-bold">+30K</span></p>
+                    </div>
+                </div>
+                <div class="text-right flex-shrink-0">
+                    <p class="text-luxury-lightgold font-bold">50 🍌</p>
+                    <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
+                </div>
+            </div>
+
             <!-- 15 cây -->
-            <div onclick="openBetModal(0)"
+            <div onclick="openBetModal(3)"
                 class="glass-card rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-luxury-gold/60 active:scale-[0.98] transition-all">
                 <div class="flex items-center space-x-3">
                     <div
@@ -350,7 +370,7 @@
             </div>
 
             <!-- 30 cây -->
-            <div onclick="openBetModal(1)"
+            <div onclick="openBetModal(4)"
                 class="glass-card rounded-2xl p-4 flex items-center justify-between cursor-pointer hover:border-luxury-gold/60 active:scale-[0.98] transition-all">
                 <div class="flex items-center space-x-3">
                     <div
@@ -367,8 +387,9 @@
                     <p class="text-gray-600 text-[9px] uppercase tracking-wider">Cược</p>
                 </div>
             </div>
+
             <!-- 50 cây (highlight) -->
-            <div onclick="openBetModal(2)"
+            <div onclick="openBetModal(5)"
                 class="rounded-2xl p-4 flex items-center justify-between cursor-pointer border border-luxury-gold bg-gradient-to-r from-luxury-gold/10 to-transparent hover:from-luxury-gold/20 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(212,175,55,0.1)]">
                 <div class="flex items-center space-x-3">
                     <div
@@ -977,9 +998,42 @@
                         <label
                             class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
                             <div class="flex items-center">
+                                <input type="radio" name="level" value="MỨC KHỞI ĐỘNG" data-trees="1"
+                                    onchange="document.getElementById('expectedTreesInput').value=1; calculateExpectedReward()"
+                                    class="text-luxury-gold focus:ring-luxury-gold bg-black" checked>
+                                <span class="ml-3 text-white text-sm">Mục tiêu 1 Cây <span
+                                        class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận +0K)</span></span>
+                            </div>
+                            <span class="text-luxury-gold font-bold text-sm">10 🍌</span>
+                        </label>
+                        <label
+                            class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
+                            <div class="flex items-center">
+                                <input type="radio" name="level" value="MỨC TIẾN BƯỚC" data-trees="2"
+                                    onchange="document.getElementById('expectedTreesInput').value=2; calculateExpectedReward()"
+                                    class="text-luxury-gold focus:ring-luxury-gold bg-black">
+                                <span class="ml-3 text-white text-sm">Mục tiêu 2 Cây <span
+                                        class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận +10K)</span></span>
+                            </div>
+                            <span class="text-luxury-gold font-bold text-sm">20 🍌</span>
+                        </label>
+                        <label
+                            class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
+                            <div class="flex items-center">
+                                <input type="radio" name="level" value="MỨC TĂNG TỐC" data-trees="3"
+                                    onchange="document.getElementById('expectedTreesInput').value=3; calculateExpectedReward()"
+                                    class="text-luxury-gold focus:ring-luxury-gold bg-black">
+                                <span class="ml-3 text-white text-sm">Mục tiêu 3 Cây <span
+                                        class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận +30K)</span></span>
+                            </div>
+                            <span class="text-luxury-gold font-bold text-sm">50 🍌</span>
+                        </label>
+                        <label
+                            class="flex items-center justify-between p-3 border border-gray-700 rounded-xl cursor-pointer hover:border-luxury-gold/50 bg-black/40">
+                            <div class="flex items-center">
                                 <input type="radio" name="level" value="MỨC TỰ TIN" data-trees="15"
                                     onchange="document.getElementById('expectedTreesInput').value=15; calculateExpectedReward()"
-                                    class="text-luxury-gold focus:ring-luxury-gold bg-black" checked>
+                                    class="text-luxury-gold focus:ring-luxury-gold bg-black">
                                 <span class="ml-3 text-white text-sm">Mục tiêu 15 Cây <span
                                         class="text-luxury-gold/70 text-xs ml-1 font-medium">(Nhận +960K)</span></span>
                             </div>
@@ -1169,7 +1223,7 @@
             // Pre-select level if provided
             if (typeof levelIndex === 'number') {
                 const radios = document.getElementsByName('level');
-                const treeMap = [15, 30, 50];
+                const treeMap = [1, 2, 3, 15, 30, 50];
                 if (radios[levelIndex]) {
                     radios[levelIndex].checked = true;
                     document.getElementById('expectedTreesInput').value = treeMap[levelIndex];
@@ -1282,8 +1336,11 @@
 
             // Auto select level
             const radios = document.getElementsByName('level');
-            if (trees >= 50) radios[2].checked = true;
-            else if (trees >= 30) radios[1].checked = true;
+            if (trees >= 50) radios[5].checked = true;
+            else if (trees >= 30) radios[4].checked = true;
+            else if (trees >= 15) radios[3].checked = true;
+            else if (trees >= 3) radios[2].checked = true;
+            else if (trees >= 2) radios[1].checked = true;
             else radios[0].checked = true;
         }
 
@@ -1295,7 +1352,7 @@
             document.getElementById('previewImage').src = '';
             document.getElementById('previewImage').classList.add('hidden');
             document.getElementById('uploadPlaceholder').classList.remove('hidden');
-            document.getElementById('expectedTreesInput').value = '15';
+            document.getElementById('expectedTreesInput').value = '1';
             document.getElementById('mantraInput').value = '';
             document.getElementById('mantraCount').innerText = '0';
             calculateExpectedReward();
